@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DBAEA74D23AADDD3005B5E05 /* EntryRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAEA74C23AADDD3005B5E05 /* EntryRepresentation.swift */; };
 		DBD359FE23A995E600953C62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD359FD23A995E600953C62 /* AppDelegate.swift */; };
 		DBD35A0023A995E600953C62 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD359FF23A995E600953C62 /* SceneDelegate.swift */; };
 		DBD35A0523A995E600953C62 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBD35A0323A995E600953C62 /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DBAEA74C23AADDD3005B5E05 /* EntryRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryRepresentation.swift; sourceTree = "<group>"; };
 		DBD359FA23A995E600953C62 /* Journal2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Journal2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD359FD23A995E600953C62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DBD359FF23A995E600953C62 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +51,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DBAEA74B23AADDC1005B5E05 /* Model Intemediary */ = {
+			isa = PBXGroup;
+			children = (
+				DBAEA74C23AADDD3005B5E05 /* EntryRepresentation.swift */,
+			);
+			path = "Model Intemediary";
+			sourceTree = "<group>";
+		};
 		DBD359F123A995E600953C62 = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +110,7 @@
 		DBD35A1523A9962000953C62 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				DBAEA74B23AADDC1005B5E05 /* Model Intemediary */,
 				DBD35A1723A9963500953C62 /* CoreDataStack.swift */,
 				DBD35A1923A9963D00953C62 /* Entry+Convenience.swift */,
 				DBD35A1B23A9964900953C62 /* Journal2.xcdatamodeld */,
@@ -189,6 +200,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBD35A2123A9968B00953C62 /* EntryTableViewCell.swift in Sources */,
+				DBAEA74D23AADDD3005B5E05 /* EntryRepresentation.swift in Sources */,
 				DBD35A1423A9961100953C62 /* EntryController.swift in Sources */,
 				DBD359FE23A995E600953C62 /* AppDelegate.swift in Sources */,
 				DBD35A1F23A9967F00953C62 /* EntryTableViewController.swift in Sources */,
