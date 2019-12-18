@@ -18,7 +18,7 @@ class EntryTableViewController: UITableViewController {
     let entryController = EntryController()
 
     lazy var fetchedResultsController: NSFetchedResultsController<Entry> = {
-        let fetchRequest:NSFetchRequest<Entry> = Entry.fetchRequest()
+        let fetchRequest: NSFetchRequest<Entry> = Entry.fetchRequest()
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(key: "mood", ascending: true),
             NSSortDescriptor(key: "timeStamp", ascending: true)
