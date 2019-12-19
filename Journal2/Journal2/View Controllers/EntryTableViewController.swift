@@ -71,41 +71,47 @@ class EntryTableViewController: UITableViewController {
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-              if editingStyle == .delete {
-                  // Delete the row from the data source
-                  let entry = fetchedResultsController.object(at: indexPath)
-                  let moc = CoreDataStack.shared.mainContext
-                  moc.delete(entry)
-                  do {
-                      try moc.save()
-                      tableView.reloadData()
-                  } catch {
-                      moc.reset()
-                      print("error saving managed object context: \(error)")
-            }
-        }
-    }
-    
-    // MARK: Navigation
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ShowEntryDetailSegue" {
-            if let detailVC = segue.destination as?
-            EntryDetailViewController,
-                let indexPath = tableView.indexPathForSelectedRow {
+            if segue.identifier == "ShowEntryDetailSegue" {
+                if let detailVC = segue.destination as?
+                EntryDetailViewController,
+                    let indexPath = tableView.indexPathForSelectedRow {
 
-                detailVC.entryController = entryController
-                detailVC.entry = fetchedResultsController.object(at: indexPath)
+                    detailVC.entryController = entryController
+                    detailVC.entry = fetchedResultsController.object(at: indexPath)
+                }
+            } else if segue.identifier == "ShowAddEntrySegue" {
+                if let detailVC = segue.destination as?
+                    EntryDetailViewController {
+                    detailVC.entryController = entryController
+                }
             }
-        } else if segue.identifier == "ShowAddEntrySegue" {
-            if let detailVC = segue.destination as?
-                EntryDetailViewController {
-                detailVC.entryController = entryController
+        }
+
+        override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+            if editingStyle == .delete {
+                let entry = fetchedResultsController.object(at: indexPath)
+
+                entryController.deleteEntryFromServer(entry) { error  in
+                    if let error = error {
+                        print("Error deleting task from server: \(error)")
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        let moc = CoreDataStack.shared.mainContext
+                        moc.delete(entry)
+                        do {
+                            try moc.save()
+                            tableView.reloadData()
+                        } catch {
+                            moc.reset()
+                            print("Error saving object \(error)")
+                        }
+                    }
+                }
             }
         }
     }
-}
 
 //MARK: Extensions
 

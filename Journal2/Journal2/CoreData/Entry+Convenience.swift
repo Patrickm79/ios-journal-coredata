@@ -21,30 +21,35 @@ enum Mood: String, CaseIterable {
 extension Entry {
     
     var entryRepresentation: EntryRepresentation? {
-        guard let title = title,
-            let mood = mood,
-            let timeStamp = timeStamp,
-            let bodyText = bodyText else {
-                return nil
-        }
-        return EntryRepresentation(title: title, mood: mood, identifier: identifier?.uuidString, timeStamp: timeStamp, bodyText: <#T##String#>)
+            guard let bodyText = bodyText,
+                let title = title,
+                let mood = mood else {
+                    return nil
+            }
+        return EntryRepresentation(title: title, mood: mood, identifier: identifier?.uuidString ?? UUID().uuidString, timeStamp: timeStamp!, bodyText: bodyText)
     }
 
-    convenience init(title: String,
-                 bodyText: String,
-                 mood: String,
-                 timeStamp: Date = Date(),
-                 identifier: UUID = UUID(),
-                 context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-    self.init(context: context)
-    self.title = title
-    self.bodyText = bodyText
-    self.mood = mood
-    self.timeStamp = timeStamp
-    self.identifier = identifier    }
-    
-    convenience init?(taskRepresentation: EntryRepresentation, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-        guard let mood = Mood(rawValue: entryRepresentation?.mood),
-            let identifierString =
-    }
-}
+        convenience init(title: String, bodyText: String? = nil, timeStamp: Date = Date.init(timeIntervalSinceNow: 0), identifier: UUID = UUID(), mood: Mood, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+
+            self.init(context: context)
+
+            self.title = title
+            self.bodyText = bodyText
+            self.timeStamp = timeStamp
+            self.identifier = identifier
+            self.mood = mood.rawValue
+        }
+
+        @discardableResult convenience init?(entryRepresentation: EntryRepresentation, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+            guard let mood = Mood(rawValue: entryRepresentation.mood),
+                let identifierString = entryRepresentation.identifier,
+                let identifier = UUID(uuidString: identifierString) else {
+                    return nil
+            }
+
+            self.init(title: entryRepresentation.title, bodyText: entryRepresentation.bodyText,
+                      identifier: identifier,
+                      mood: mood,
+                      context: context)
+        }
+   }

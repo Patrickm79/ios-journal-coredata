@@ -36,16 +36,20 @@ class EntryDetailViewController: UIViewController {
  @IBAction func saveTapped(_ sender: UIBarButtonItem) {
      guard let entryController = entryController,
          let title = titleTextField.text,
-         let body = bodyTextView.text
+         let bodyText = bodyTextView.text
          else { return }
      let moodIndex = moodChange.selectedSegmentIndex
      let mood = Mood.allMoods[moodIndex]
 
      if let entry = entry {
-         entryController.update(entry: entry, title: title, bodyText: body, mood: mood.rawValue)
+        entry.title = title
+        entry.mood = mood.rawValue
+        entry.bodyText = bodyText
+        entryController.sendEntryToServer(entry: entry)
      } else {
-         entryController.create(title: title, bodyText: body, mood: mood.rawValue, timeStamp: Date(), identifier: "")
-     }
+        let entry = Entry(title: title, bodyText: bodyText, mood: mood, context: CoreDataStack.shared.mainContext)
+        entryController.sendEntryToServer(entry: entry)
+    }
      navigationController?.popViewController(animated: true)
  }
 
@@ -56,17 +60,12 @@ func updateViews() {
      guard isViewLoaded else { return }
      title = entry?.title ?? "Create Entry"
      titleTextField.text = entry?.title
-
-     let mood: Mood
-     if let entryMood = entry?.mood,
-         let moods = Mood(rawValue: entryMood){
-         mood = moods
-     } else {
-         mood = .😐
-     }
-
-     let moodIndex = Mood.allMoods.firstIndex(of: mood)!
-     moodChange.selectedSegmentIndex = moodIndex
      bodyTextView.text = entry?.bodyText
+    
+    
+    if let mood = Mood(rawValue: entry?.mood ?? "😐"),
+        let moodIndex = Mood.allMoods.firstIndex(of: mood) {
+        moodChange.selectedSegmentIndex = moodIndex
+        }
      }
  }

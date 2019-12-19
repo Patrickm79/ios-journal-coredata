@@ -31,12 +31,16 @@ class CoreDataStack {
 
     //MARK: Methods
     
-    func saveToPersistentStore() {
-        do {
-            try mainContext.save()
-        } catch {
-            NSLog("Error saving context: \(error)")
-            mainContext.reset()
+    func save(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) throws {
+        var error: Error?
+        
+        context.performAndWait {
+            do {
+                try context.save()
+        } catch let saveError {
+            error = saveError
+            }
         }
+        if let error = error { throw error }
     }
 }
